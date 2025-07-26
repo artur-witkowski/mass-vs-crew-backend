@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PeopleModule } from './people/people.module';
+import { StarshipModule } from './starships/starship.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { AppService } from './app.service';
       autoSchemaFile: true,
       playground: true,
     }),
+    PeopleModule,
+    StarshipModule,
   ],
   controllers: [AppController],
   providers: [AppService],
