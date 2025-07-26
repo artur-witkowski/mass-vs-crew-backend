@@ -27,7 +27,9 @@
     "pgadmin:down": "docker-compose stop pgadmin",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "seed": "ts-node src/seed.ts",
+    "db:seed": "npm run seed"
   },
   "dependencies": {
     "@nestjs/apollo": "^13.1.0",
