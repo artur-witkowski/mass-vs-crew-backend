@@ -23,4 +23,8 @@ export class Starship {
   @Field(() => Int)
   @Column()
   crew: number;
+
+  @Field(() => Int)
+  @Column()
+  length: number;
 }
