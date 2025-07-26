@@ -1,98 +1,206 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Mass vs. Crew - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A Star Wars-themed GraphQL API built with NestJS, TypeORM, and PostgreSQL.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📖 Table of Contents
 
-## Description
+- [🌟 Features](#🌟-features)
+- [🚀 Quick Start](#🚀-quick-start)
+- [🔧 Configuration](#🔧-configuration)
+- [📊 API Overview](#📊-api-overview)
+- [📝 Data Schema](#📝-data-schema)
+- [🧪 Testing](#🧪-testing)
+- [👤 Author](#👤-author)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🌟 Features
 
-## Project setup
+- **GraphQL API** with Apollo Server
+- **Star Wars Data** - 15 characters and 15 starships
+- **Random Selection** - Get random pairs of characters/starships
+- **Comparable Data** - All entities include numerical fields (mass, height, crew, length)
+- **Full CRUD** - Create, read, update, delete entities
+- **Pagination** - Efficient data loading
+- **TypeScript** - Full type safety
+- **Comprehensive Tests** - Unit, integration, and E2E
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- Docker & Docker Compose
+- npm or yarn
+
+### Installation
+
+1. **Clone and setup**
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   npm install
+   ```
+
+2. **Environment setup**
+
+   ```bash
+   cp .env.example .env
+   # Edit .env if needed (defaults work with Docker)
+   ```
+
+3. **Start database**
+
+   ```bash
+   npm run docker:up
+   ```
+
+4. **Seed data**
+
+   ```bash
+   npm run seed
+   ```
+
+5. **Start development server**
+   ```bash
+   npm run start:dev
+   ```
+
+🎉 **Ready!** GraphQL Playground: http://localhost:3000/graphql
+
+## 🔧 Configuration
+
+### Environment Variables (.env)
 
 ```bash
-$ npm install
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
+DATABASE_NAME=mass_vs_crew
+PORT=3000
 ```
 
-## Compile and run the project
+## 📊 API Overview
+
+### People Queries
+
+```graphql
+# Get paginated people
+getPeople(page: 1, limit: 10)
+
+# Get person by ID
+getPeopleById(id: 1)
+
+# Get two random people
+getTwoRandomPeople
+```
+
+### Starship Queries
+
+```graphql
+# Get paginated starships
+getStarships(page: 1, limit: 10)
+
+# Get starship by ID
+getStarshipById(id: 1)
+
+# Get two random starships
+getTwoRandomStarships
+```
+
+### Random Data Example
+
+```graphql
+query GetRandomData {
+  people: getTwoRandomPeople {
+    id
+    name
+    mass
+    height
+  }
+  starships: getTwoRandomStarships {
+    id
+    name
+    crew
+    length
+  }
+}
+```
+
+### Database Management
 
 ```bash
-# development
-$ npm run start
+# Start database only
+npm run db:up
 
-# watch mode
-$ npm run start:dev
+# Start with PgAdmin (localhost:8080)
+npm run pgadmin:up
 
-# production mode
-$ npm run start:prod
+# View logs
+npm run db:logs
+
+# Complete reset
+npm run db:reset && npm run seed
 ```
 
-## Run tests
+### Comparable Data Fields
+
+All entities include numerical fields suitable for comparisons:
+
+- **People**: `mass` (integer) - body mass in kilograms, `height` (integer) - height in centimeters
+- **Starships**: `crew` (integer) - crew size, `length` (integer) - length in meters
+
+## 📝 Data Schema
+
+### People Entity
+
+```typescript
+{
+  id: number;
+  name: string; // "Luke Skywalker"
+  mass: number; // 77
+  height: number; // 172
+  gender: string; // "male"
+}
+```
+
+### Starship Entity
+
+```typescript
+{
+  id: number;
+  name: string; // "Millennium Falcon"
+  model: string; // "YT-1300 light freighter"
+  manufacturer: string; // "Corellian Engineering"
+  crew: number; // 4
+  length: number; // 35
+}
+```
+
+## 🧪 Testing
+
+### Run Tests
 
 ```bash
-# unit tests
-$ npm run test
+# All tests
+npm test
 
-# e2e tests
-$ npm run test:e2e
+# With coverage
+npm run test:cov
 
-# test coverage
-$ npm run test:cov
+# E2E tests
+npm run test:e2e
+
+# Watch mode
+npm run test:watch
 ```
 
-## Deployment
+### Test Coverage
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- **Unit Tests**: Services and Resolvers
+- **Integration Tests**: GraphQL endpoints
+- **E2E Tests**: Full application flow
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 👤 Author
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Artur Witkowski**
