@@ -2,16 +2,6 @@
 
 A Star Wars-themed GraphQL API built with NestJS, TypeORM, and PostgreSQL.
 
-## 📖 Table of Contents
-
-- [🌟 Features](#🌟-features)
-- [🚀 Quick Start](#🚀-quick-start)
-- [🔧 Configuration](#🔧-configuration)
-- [📊 API Overview](#📊-api-overview)
-- [📝 Data Schema](#📝-data-schema)
-- [🧪 Testing](#🧪-testing)
-- [👤 Author](#👤-author)
-
 ## 🌟 Features
 
 - **GraphQL API** with Apollo Server
